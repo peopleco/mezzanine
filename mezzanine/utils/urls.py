@@ -25,12 +25,21 @@ def reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None, current
     """
     Proxy for django's reverse to add in request-specific parameters
     """
-    if kwargs is None:
-        kwargs = {}
-    if 'site_id' not in kwargs:
-        request = current_request()
-        if hasattr(request,'site_id'):
+    request = current_request()
+    if hasattr(request,'site_id'):
+        if args is None and kwargs is None:
+            kwargs = {'site_id': str(request.site_id)}
+        elif args is None and kwargs is not None:
             kwargs['site_id'] = str(request.site_id)
+        elif args is not None and kwargs is None:
+            args = tuple([str(request.site_id)]+list(args))
+        elif len(args) == 0:
+            kwargs['site_id'] = str(request.site_id)
+        elif len(kwargs) == 0:
+            args = tuple([str(request.site_id)]+list(args))
+        else:
+            kwargs['site_id'] = str(request.site_id)
+            
     return urlresolvers.reverse(viewname,
                                 urlconf=urlconf,
                                 args=args,
