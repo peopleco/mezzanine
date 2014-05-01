@@ -13,7 +13,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.sites.models import Site
 from django.core.files import File
 from django.core.files.storage import default_storage
-from django.core.urlresolvers import reverse, resolve, NoReverseMatch
+from django.core.urlresolvers import resolve, NoReverseMatch
 from django.db.models import Model, get_model
 from django.template import (Context, Node, TextNode, Template,
     TemplateSyntaxError, TOKEN_TEXT, TOKEN_VAR, TOKEN_COMMENT, TOKEN_BLOCK)
@@ -30,7 +30,7 @@ from mezzanine.utils.cache import nevercache_token, cache_installed
 from mezzanine.utils.html import decode_entities
 from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.sites import current_site_id, has_site_permission
-from mezzanine.utils.urls import admin_url
+from mezzanine.utils.urls import admin_url, reverse
 from mezzanine.utils.views import is_editable
 from mezzanine import template
 
@@ -669,3 +669,37 @@ def translate_url(context, language):
     if context['request'].META["QUERY_STRING"]:
         url += "?" + context['request'].META["QUERY_STRING"]
     return url
+
+from django.template.base import kwarg_re, TemplateSyntaxError
+from django.template.defaulttags import URLNode
+
+@register.tag
+def murl(parser, token):
+    bits = token.split_contents()
+    if len(bits) < 2:
+        raise TemplateSyntaxError("'%s' takes at least one argument"
+                                  " (path to a view)" % bits[0])
+    viewname = parser.compile_filter(bits[1])
+    args = []
+    kwargs = {}
+    asvar = None
+    bits = bits[2:]
+    if len(bits) >= 2 and bits[-2] == 'as':
+        asvar = bits[-1]
+        bits = bits[:-2]
+
+    print "Wheeeeeeee!",viewname
+
+    if len(bits):
+        for bit in bits:
+            match = kwarg_re.match(bit)
+            if not match:
+                raise TemplateSyntaxError("Malformed arguments to url tag")
+            name, value = match.groups()
+            if name:
+                kwargs[name] = parser.compile_filter(value)
+            else:
+                args.append(parser.compile_filter(value))
+
+    return URLNode(viewname, args, kwargs, asvar)
+

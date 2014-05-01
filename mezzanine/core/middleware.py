@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 from django.contrib.messages import error
 from django.contrib.redirects.models import Redirect
 from django.core.exceptions import MiddlewareNotUsed
-from django.core.urlresolvers import reverse, resolve
+from django.core.urlresolvers import resolve
 from django.http import (HttpResponse, HttpResponseRedirect,
                          HttpResponsePermanentRedirect, HttpResponseGone)
 from django.middleware.csrf import CsrfViewMiddleware, get_token
@@ -22,7 +22,7 @@ from mezzanine.utils.cache import (cache_key_prefix, nevercache_token,
                                    cache_get, cache_set, cache_installed)
 from mezzanine.utils.device import templates_for_device
 from mezzanine.utils.sites import current_site_id, templates_for_host
-from mezzanine.utils.urls import next_url
+from mezzanine.utils.urls import next_url, reverse
 
 
 _deprecated = {
@@ -288,3 +288,13 @@ class RedirectFallbackMiddleware(object):
                 else:
                     response = HttpResponseRedirect(redirect.new_path)
         return response
+
+
+class MultiTenantSiteMiddleware(object):
+    """
+    Set's the request site_id based on the view kwargs
+    """
+    def process_view(self, request, view_func, view_args, view_kwargs):
+        if 'site_id' in view_kwargs:
+            request.site_id = int(view_kwargs['site_id'])
+            print "Setting mezzanine site_id",request.site_id

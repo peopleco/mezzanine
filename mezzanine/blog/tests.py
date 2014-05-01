@@ -5,7 +5,7 @@ try:
 except ImportError:
     from urlparse import urlparse
 
-from django.core.urlresolvers import reverse
+from mezzanine.utils.urls import reverse
 from django.utils.unittest import skipUnless
 
 from mezzanine.blog.models import BlogPost

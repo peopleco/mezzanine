@@ -5,7 +5,8 @@ import re
 import unicodedata
 
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import (resolve, reverse, NoReverseMatch,
+import django.core.urlresolvers as urlresolvers
+from django.core.urlresolvers import (resolve, NoReverseMatch,
                                       get_script_prefix)
 from django.shortcuts import redirect
 try:
@@ -18,7 +19,24 @@ from django.utils import translation
 
 from mezzanine.conf import settings
 from mezzanine.utils.importing import import_dotted_path
+from mezzanine.core.request import current_request
 
+def reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None, current_app=None):
+    """
+    Proxy for django's reverse to add in request-specific parameters
+    """
+    if kwargs is None:
+        kwargs = {}
+    if 'site_id' not in kwargs:
+        request = current_request()
+        if hasattr(request,'site_id'):
+            kwargs['site_id'] = str(request.site_id)
+    return urlresolvers.reverse(viewname,
+                                urlconf=urlconf,
+                                args=args,
+                                kwargs=kwargs,
+                                prefix=prefix,
+                                current_app=current_app)
 
 def admin_url(model, url, object_id=None):
     """
@@ -133,8 +151,11 @@ def path_to_slug(path):
     """
     from mezzanine.urls import PAGES_SLUG
     lang_code = translation.get_language_from_path(path)
-    for prefix in (lang_code, settings.SITE_PREFIX, PAGES_SLUG):
+    for prefix in (lang_code, PAGES_SLUG):
         if prefix:
             path = path.replace(prefix, "", 1)
+    if settings.SITE_PREFIX:
+        path = re.sub(settings.SITE_PREFIX, "", path)
     path = path.strip("/") if settings.APPEND_SLASH else path.lstrip("/")
     return path or "/"
+

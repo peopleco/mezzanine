@@ -5,7 +5,7 @@ try:
 except ImportError:     # Python 2
     from urlparse import urljoin
 
-from django.core.urlresolvers import resolve, reverse
+from django.core.urlresolvers import resolve
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
@@ -14,7 +14,7 @@ from mezzanine.conf import settings
 from mezzanine.core.models import Displayable, Orderable, RichText
 from mezzanine.pages.fields import MenusField
 from mezzanine.pages.managers import PageManager
-from mezzanine.utils.urls import path_to_slug, slugify
+from mezzanine.utils.urls import path_to_slug, slugify, reverse
 
 
 class BasePage(Orderable, Displayable):

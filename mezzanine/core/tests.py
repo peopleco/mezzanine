@@ -14,7 +14,7 @@ from django.forms import Textarea
 from django.forms.models import modelform_factory
 from django.contrib.sites.models import Site
 from django.templatetags.static import static
-from django.core.urlresolvers import reverse
+from mezzanine.utils.urls import reverse
 from django.core import mail
 from django.utils.html import strip_tags
 from django.utils.unittest import skipUnless
