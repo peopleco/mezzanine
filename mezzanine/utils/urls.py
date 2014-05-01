@@ -39,7 +39,6 @@ def reverse(viewname, urlconf=None, args=None, kwargs=None, prefix=None, current
             args = tuple([str(request.site_id)]+list(args))
         else:
             kwargs['site_id'] = str(request.site_id)
-            
     return urlresolvers.reverse(viewname,
                                 urlconf=urlconf,
                                 args=args,

@@ -24,7 +24,7 @@
     {% for blog_post in blog_posts.object_list %}
 		<li>
         {% editable blog_post.title blog_post.publish_date %}
-        <h2 class="blog-post-title"><a href="{% url "blog_post_detail" blog_post.slug %}">{{ blog_post.title }}</a></h2>
+        <h2 class="blog-post-title"><a href="{% murl "blog_post_detail" blog_post.slug %}">{{ blog_post.title }}</a></h2>
         <em class="since">{% blocktrans with sometime=blog_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}</em>
         {% endeditable %}
         </li>

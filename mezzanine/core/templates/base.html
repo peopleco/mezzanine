@@ -11,8 +11,8 @@
 <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
 
 {% ifinstalled mezzanine.blog %}
-<link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
-<link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="{% murl "blog_post_feed" "rss" %}">
+<link rel="alternate" type="application/atom+xml" title="Atom" href="{% murl "blog_post_feed" "atom" %}">
 {% endifinstalled %}
 
 {% compress css %}
@@ -139,7 +139,7 @@
     {% trans "Theme by" %} <a target="_blank" href="http://getbootstrap.com">Bootstrap</a>
     {% ifinstalled mezzanine.mobile %}
     <span class="separator">|</span>
-    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
+    <a href="{% murl "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
     {% endifinstalled %}
 </p>
 </div>

@@ -2,7 +2,7 @@
 
 {# Edit form #}
 <form style="display:none;" class="editable-form" method="post"
-    action="{% url "edit" %}" id="{{ editable_form.uuid }}"
+    action="{% murl "edit" %}" id="{{ editable_form.uuid }}"
     {% if editable_form.is_multipart %} enctype="multipart/form-data"{% endif %}>
     {% csrf_token %}
     {% for field in editable_form %}

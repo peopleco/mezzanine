@@ -716,6 +716,5 @@ def murl(parser, token):
         else:
             kwargs['site_id'] = site_id_val
 
-    print "Wheeeeeeee!", viewname, "args:", len(args), "kwargs:", len(kwargs)
     return URLNode(viewname, args, kwargs, asvar)
 

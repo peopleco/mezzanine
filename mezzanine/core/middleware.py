@@ -297,4 +297,5 @@ class MultiTenantSiteMiddleware(object):
     def process_view(self, request, view_func, view_args, view_kwargs):
         if 'site_id' in view_kwargs:
             request.site_id = int(view_kwargs['site_id'])
+            del view_kwargs['site_id']
             print "Setting mezzanine site_id",request.site_id

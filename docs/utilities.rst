@@ -70,7 +70,7 @@ name argument supplied to it::
     <ul>
         <li>Keywords:</li>
         {% for keyword in keywords %}
-        <li><a href="{% url "books_for_keyword" keyword.slug %}">{{ keyword }}</a></li>
+        <li><a href="{% murl "books_for_keyword" keyword.slug %}">{{ keyword }}</a></li>
         {% endfor %}
     </ul>
     {% endif %}

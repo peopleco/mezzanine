@@ -5,7 +5,7 @@
 {% block extrahead %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static "mezzanine/css/admin/form_entries.css" %}">
-<script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' packages="mezzanine.forms" %}"></script>
+<script type="text/javascript" src="{% murl 'django.views.i18n.javascript_catalog' packages="mezzanine.forms" %}"></script>
 <script src="{% static "mezzanine/js/admin/form_entries.js" %}"></script>
 {% endblock %}
 

@@ -43,7 +43,7 @@
             <select id="id_language" onchange="window.location.href=this.value;">
                 {% for lang in languages %}
                 {% language lang.code %}
-                <option{% if LANGUAGE_CODE == lang.code %} selected="selected"{% endif %} value="{% url 'admin:index' %}">{{ lang.name_local }}</option>
+                <option{% if LANGUAGE_CODE == lang.code %} selected="selected"{% endif %} value="{% murl 'admin:index' %}">{{ lang.name_local }}</option>
                 {% endlanguage %}
                 {% endfor %}
             </select>
@@ -63,7 +63,7 @@
         <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
     </div>
     <p id="forgot-password">
-        <a href="{% url "password_reset" %}">{% trans "Forgot password?" %}</a>
+        <a href="{% murl "password_reset" %}">{% trans "Forgot password?" %}</a>
     </p>
 </form>
 

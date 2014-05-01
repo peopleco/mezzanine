@@ -15,7 +15,7 @@
 <div class="profile-image col-md-3">
     <img class="img-thumbnail" src="{% gravatar_url profile_user.email 128 %}">
     {% if profile_user == request.user %}
-    <br><a class="btn btn-primary" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
+    <br><a class="btn btn-primary" href="{% murl "profile_update" %}">{% trans "Update profile" %}</a>
     {% endif %}
 </div>
 <div class="profile-content col-md-9">

@@ -12,13 +12,13 @@
     {% if singleton %}.change-view-save-another {display:none !important;}{% endif %}
 </style>
 <script>
-    {% url "static_proxy" as static_proxy_url %}
-    {% url "fb_browse" as fb_browse_url %}
-    {% url "admin:index" as admin_index_url %}
+    {% murl "static_proxy" as static_proxy_url %}
+    {% murl "fb_browse" as fb_browse_url %}
+    {% murl "admin:index" as admin_index_url %}
     {% get_current_language as LANGUAGE_CODE %}
-    window.__home_link = '<a href="{% url "home" %}">{% trans "View site" %}</a>';
+    window.__home_link = '<a href="{% murl "home" %}">{% trans "View site" %}</a>';
     window.__csrf_token = '{{ csrf_token }}';
-    window.__admin_keywords_submit_url = '{% url "admin_keywords_submit" %}';
+    window.__admin_keywords_submit_url = '{% murl "admin_keywords_submit" %}';
     window.__filebrowser_url = '{{ fb_browse_url }}';
     window.__tinymce_css = '{% static "mezzanine/css/tinymce.css" %}';
     window.__admin_url = '{{ admin_index_url }}';
