@@ -672,6 +672,7 @@ def translate_url(context, language):
 
 from django.template.base import kwarg_re, TemplateSyntaxError
 from django.template.defaulttags import URLNode
+from mezzanine.core.request import current_request
 
 @register.tag
 def murl(parser, token):
@@ -688,8 +689,6 @@ def murl(parser, token):
         asvar = bits[-1]
         bits = bits[:-2]
 
-    print "Wheeeeeeee!",viewname
-
     if len(bits):
         for bit in bits:
             match = kwarg_re.match(bit)
@@ -701,5 +700,22 @@ def murl(parser, token):
             else:
                 args.append(parser.compile_filter(value))
 
+    request = current_request()
+    site_id_val = parser.compile_filter(str(request.site_id))
+    if hasattr(request,'site_id'):
+        if args is None and kwargs is None:
+            kwargs = {'site_id': site_id_val}
+        elif args is None and kwargs is not None:
+            kwargs['site_id'] = site_id_val
+        elif args is not None and kwargs is None:
+            args = [site_id_val]+args
+        elif len(args) == 0:
+            kwargs['site_id'] = site_id_val
+        elif len(kwargs) == 0:
+            args = [site_id_val]+list(args)
+        else:
+            kwargs['site_id'] = site_id_val
+
+    print "Wheeeeeeee!", viewname, "args:", len(args), "kwargs:", len(kwargs)
     return URLNode(viewname, args, kwargs, asvar)
 
