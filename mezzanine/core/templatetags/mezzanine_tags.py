@@ -680,7 +680,8 @@ def murl(parser, token):
     if len(bits) < 2:
         raise TemplateSyntaxError("'%s' takes at least one argument"
                                   " (path to a view)" % bits[0])
-    viewname = parser.compile_filter(bits[1])
+    viewname_str = bits[1]
+    viewname = parser.compile_filter(viewname_str)
     args = []
     kwargs = {}
     asvar = None

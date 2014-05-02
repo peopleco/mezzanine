@@ -81,22 +81,8 @@ class SitePermissionMiddleware(object):
     access.
     """
     def process_view(self, request, view_func, view_args, view_kwargs):
-        has_site_permission = False
-        if request.user.is_superuser:
-            has_site_permission = True
-        elif request.user.is_staff:
-            lookup = {"user": request.user, "sites": current_site_id()}
-            try:
-                SitePermission.objects.get(**lookup)
-            except SitePermission.DoesNotExist:
-                admin_index = reverse("admin:index")
-                if request.path.startswith(admin_index):
-                    logout(request)
-                    view_func = admin.site.login
-                    extra_context = {"no_site_permission": True}
-                    return view_func(request, extra_context=extra_context)
-            else:
-                has_site_permission = True
+        lookup = {"user": request.user, "sites": current_site_id()}
+        has_site_permission = request.user.is_authenticated() and SitePermission.objects.filter(**lookup).exists()
         request.user.has_site_permission = has_site_permission
 
 

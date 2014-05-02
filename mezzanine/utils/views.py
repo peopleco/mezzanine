@@ -36,9 +36,13 @@ def is_editable(obj, request):
         return obj.is_editable(request)
     else:
         perm = obj._meta.app_label + "." + obj._meta.get_change_permission()
-        return (request.user.is_authenticated() and
-                has_site_permission(request.user) and
-                request.user.has_perm(perm))
+        allowed = (request.user.is_authenticated()
+                and has_site_permission(request.user)
+                # TODO: Add back in perm check
+                # and request.user.has_perm(perm)
+                )
+        return allowed
+        
 
 
 def ip_for_request(request):

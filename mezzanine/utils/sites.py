@@ -68,11 +68,6 @@ def has_site_permission(user):
     installed, to ease migration.
     """
     mw = "mezzanine.core.middleware.SitePermissionMiddleware"
-    if mw not in settings.MIDDLEWARE_CLASSES:
-        from warnings import warn
-        warn(mw + " missing from settings.MIDDLEWARE_CLASSES - per site"
-             "permissions not applied")
-        return user.is_staff and user.is_active
     return getattr(user, "has_site_permission", False)
 
 
